@@ -15,12 +15,15 @@ public class MvcConfig implements WebMvcConfigurer {
     @Autowired
     private FileProperties fileProperties ;
 
+
+    //파일 정적 업로드 경로
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(fileProperties.getUrl() + "**")
                 .addResourceLocations("file:///" + fileProperties.getPath());
     }
 
+    //메세지 추가
     @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource ms = new ResourceBundleMessageSource();
