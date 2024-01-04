@@ -1,4 +1,4 @@
-package com.hospital.config;
+package com.hospital.configs;
 
 
 import lombok.Data;
