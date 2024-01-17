@@ -1,4 +1,4 @@
-package com.hospital.controllers.member;
+package com.hospital.member.controllers;
 
 
 import com.hospital.commons.Utils;

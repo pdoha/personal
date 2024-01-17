@@ -8,24 +8,33 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice("com.hospital.controllers")
+@ControllerAdvice("com.hospital.controllers") //이 범위에만 해당하는 컨트롤러들
 public class CommonController {
+
     //모든예외가 발생하면 여기로옴
     @ExceptionHandler(Exception.class)
-    public String errorHandler(Exception e, HttpServletResponse response, Model model){
-
+    public String errorHandler(Exception e, HttpServletResponse response,
+                               HttpServletRequest request, Model model){
+        //예외 객체 e , 응답 코드 , 추가데이터
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR; //500으로 고정
 
-        //e가 CommonException의 예외이면
+        //e가 내가만든 CommonException의 객체인지 체크
         if(e instanceof CommonException){
+            //넘어온 객체 e는 상위클래스 하위클래스로 이용하려면 원래형태 객체 CommonException이어야함
+            //-> 형변환
             CommonException commonException = (CommonException) e;
-            status = commonException.getStatus();
+            status = commonException.getStatus(); //각 예외에 따라 바꿔줌
         }
 
         response.setStatus(status.value());
 
         e.printStackTrace();
-        //공통 예외 템플릿 연결
-        return "error/common";
+
+        //에러정보 추가
+        model.addAttribute("status", status.value());
+        model.addAttribute("path", request.getRequestURL());
+        model.addAttribute("method", request.getMethod()); //요청방식
+        model.addAttribute("message", e.getMessage());
+        return "error/common"; //공통 예외 템플릿 연결
     }
 }
