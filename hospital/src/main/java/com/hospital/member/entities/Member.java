@@ -1,14 +1,29 @@
 package com.hospital.member.entities;
 
-import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import com.hospital.commons.entities.Base;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.Data;
 @Data
-@Builder
 @Entity
-@NoArgsConstructor @AllArgsConstructor //기본생성자 추가
 public class Member extends Base{
+
+    //기본키는 Wrapper class타입으로 입력
+    @Id @GeneratedValue //자동증감 추가
+    private Long seq;
+
+    //이메일 & 아이디는 중복 X :  unique = true
+    @Column(length = 80, nullable = false, unique = true)
+    private String email;
+
+    @Column(length = 40, nullable = false, unique = true)
+    private String userId;
+
+    @Column(length = 65, nullable = false)
+    private String password;
+
+    @Column(length = 40, nullable = false)
+    private String name;
 }

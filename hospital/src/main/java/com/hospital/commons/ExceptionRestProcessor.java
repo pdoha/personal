@@ -1,20 +1,19 @@
-package com.hospital.restControllers;
+package com.hospital.commons;
 
 import com.hospital.commons.exceptions.CommonException;
 import com.hospital.commons.rests.JSONData;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice("com.hospital.restcontrollers") //범위 지정
-public class RestCommonController {
+public interface ExceptionRestProcessor {
+
     //형식을 고정하고
     //동일한형식으로
     //예외가 발생하면 유입되게
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<JSONData<Object>> errorHandler(Exception e){
+    default ResponseEntity<JSONData<Object>> errorHandler(Exception e){
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR; //500
         //발생한 예외가 commonException 의 객체이면
         //상태코드도 가져와서 교체

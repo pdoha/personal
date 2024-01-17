@@ -1,19 +1,18 @@
-package com.hospital.controllers;
+package com.hospital.commons;
 
 import com.hospital.commons.exceptions.CommonException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice("com.hospital.controllers") //이 범위에만 해당하는 컨트롤러들
-public class CommonController {
+public interface ExceptionProcessor {
+
 
     //모든예외가 발생하면 여기로옴
     @ExceptionHandler(Exception.class)
-    public String errorHandler(Exception e, HttpServletResponse response,
+    default String errorHandler(Exception e, HttpServletResponse response,
                                HttpServletRequest request, Model model){
         //예외 객체 e , 응답 코드 , 추가데이터
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR; //500으로 고정
