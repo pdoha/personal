@@ -21,9 +21,10 @@
         <dl>
             <dt th:text="#{아이디}"></dt>
             <dd>
-                <input type="text" name="userId" th:field="*{userId}">
-                <div class="error" th:each="err : ${#fields.errors('userId')}"
-                     th:text="${err}"></div>
+                <input type="text" name="userId" th:value="${session.username}" th:field="*{userId}">
+
+                <div class="error" th:if="${session.NotBlank_username != null}"
+                     th:text="${session.NotBlank_username}"></div>
             </dd>
         </dl>
 
@@ -31,8 +32,8 @@
             <dt th:text="#{비밀번호}"></dt>
             <dd>
                 <input type="password" name="password" th:field="*{password}">
-                <div class="error" th:each="err : ${#fields.errors('password')}"
-                     th:text="${err}"></div>
+                <div class="error" th:if="${session.NotBlank_password != null}"
+                     th:text="${NotBlank_password}"></div>
             </dd>
         </dl>
 
@@ -48,7 +49,7 @@
         <dl>
             <dt th:text="#{회원명}"></dt>
             <dd>
-                <input type="password" name="name" th:field="*{name}">
+                <input type="text" name="name" th:field="*{name}">
                 <div class="error" th:each="err : ${#fields.errors('name')}"
                      th:text="${err}"></div>
             </dd>
@@ -58,7 +59,7 @@
         <div th:text="#{회원가입_약관}"></div>
         <div class="terms">약관..</div>
         <div class="terms_agree">
-            <input type="checkbox" name="agree" value="true" id="agree">
+            <input type="checkbox" name="agree" value="true" id="agree" th:field="*{agree}">
             <label for="agree" th:text="#{회원가입_약관에_동의합니다.}"></label>
 
             <div class="error" th:each="err : ${#fields.errors('agree')}"

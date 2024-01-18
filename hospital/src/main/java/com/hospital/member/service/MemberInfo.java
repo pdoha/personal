@@ -38,6 +38,7 @@ public class MemberInfo implements UserDetails {
     public String getUsername() {
         return StringUtils.hasText(email) ? email : userId; //이메일이 있으면 이메일 없으면 userId
     }
+
     //계정이 만료 상태인지 체크
     //false이면 로그인이 안되서 우선 true로 바꿔주고 추후 관리자 설정에서 바꾼다
     @Override

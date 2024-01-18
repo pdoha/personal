@@ -1,5 +1,6 @@
 package com.hospital.member.controllers;
 
+import com.hospital.commons.validators.PasswordValidator;
 import com.hospital.member.repositories.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import org.springframework.validation.Validator;
  */
 @Component //스프링 관리 객체 등록
 @RequiredArgsConstructor
-public class JoinValidator implements Validator {
+public class JoinValidator implements Validator, PasswordValidator {
     private final MemberRepository memberRepository;
 
     //검증 대상 : RequestJoin.class
@@ -47,6 +48,13 @@ public class JoinValidator implements Validator {
             if(StringUtils.hasText(password) && StringUtils.hasText(confirmPassword)
                 && !password.equals(confirmPassword)){
                 errors.rejectValue("confirmPassword", "Mismatch.password");
+            }
+
+            //비밀번호 복잡성 체크
+            //-대소문자 1개 각각 포함, 숫자 1개 이상 포함, 특수문자도 1개 이상 포함
+            if(StringUtils.hasText(password) &&
+                    (!alphaCheck(password, true))){
+                errors.rejectValue("password", "Complexity");
             }
     }
 
