@@ -1,6 +1,7 @@
 package com.hospital.commons.interceptors;
 
 
+import com.hospital.member.MemberUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -14,6 +15,9 @@ public class CommonInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         checkDevice(request);
+
+        //로그인페이지가 아닌 페이지일때는 메세지관련 세션내용을 비우자
+        clearLoginData(request);
 
         return true;
     }
@@ -48,5 +52,18 @@ public class CommonInterceptor implements HandlerInterceptor {
         //값이 있으면 고정
         session.setAttribute("device", device);
 
+    }
+
+    //로그인페이지가 아닌 페이지일때는 메세지관련 세션내용을 비우자
+    //->접속한 주소가 뭔지알아야함 getRequestURI
+    private void clearLoginData(HttpServletRequest request){
+        String URL = request.getRequestURI();
+        //주소 url member/login 주소가 아닌 페이지면 전부 제거
+        if(URL.indexOf("/member/login") == -1){  //문자열이 포함되지않을때  indexof
+            //세션객체 가져와서 getSession
+            HttpSession session = request.getSession();
+            //만들어놓은  MemberUtil 이용 (공통처리를 위해 넣어준 인터셉터)
+            MemberUtil.clearLoginData(session);
+        }
     }
 }
