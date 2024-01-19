@@ -43,17 +43,20 @@ commonLib.ajaxLoad = function(method, url, params, responseType) {
 
 /**
 * 위지윅 에디터 로드
-*
-*/
-commonLib.loadEditor = function(id, height) {
-    if (!id) {
-        return;
-    }
 
+*
+*/ //특정아이디를 가지고 에디터 생성
+commonLib.loadEditor = function(id, height) { //매개변수로 id, 높이
+    if (!id) { //아이디가 없을때는
+        return; //실행하지 않음
+    }
+    //height가 없을 때는 기본값
     height = height || 450;
 
-    // ClassicEditor
+    // ClassicEditor객체가 만들어져서 에디터를 만들수있음
+
     return ClassicEditor.create(document.getElementById(id), {
+    //반환값 요소선택(id),ClassicEditor의 2번째 매개변수가 에디터의 설정값 많지만 height만 넣어줬음
         height
     });
 }

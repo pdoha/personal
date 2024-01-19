@@ -85,6 +85,7 @@ public class BoardController implements ExceptionProcessor {
 
         if (mode.equals("add") || mode.equals("edit")){ //게시판 등록 또는 수정일때
             addCommonScript.add("ckeditor5/ckeditor"); //에디더 추가
+            addCommonScript.add("fileManager"); //파일업로드 ( 필요할때만 추가)
             addScript.add("borad/form"); //보드 양식
 
         }
