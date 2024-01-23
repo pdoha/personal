@@ -3,6 +3,7 @@ package com.hospital.member.repositories;
 
 import com.hospital.member.entities.Member;
 import com.hospital.member.entities.QMember;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
@@ -12,14 +13,19 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long>,
         QuerydslPredicateExecutor<Member> {
 
+
+
+
     //그냥 멤버보다 optional 형태로쓰자
     //멤버형태로 받아서
     //optional형태로 조회해서 반환값도 optional형태로 만들어짐
     //이메일과 유저 아이디 두가지 형태로 회원를 조회
 
+    @EntityGraph(attributePaths = "authorities") //조회했을때 즉시 로딩
     Optional<Member> findByEmail(String email);
     Optional<Member> findByUserId(String userId);
 
+    @EntityGraph(attributePaths = "authorities") //조회했을때 즉시 로딩
     default boolean existsByEmail(String email){
         QMember member = QMember.member;
         //이메일 존재하는지 체크
