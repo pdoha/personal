@@ -20,6 +20,11 @@ public class Menu {
 
         ));
 
+        menus.put("center", Arrays.asList(
+                new MenuDetail("list", "지점목록", "/admin/center"),
+                new MenuDetail("add", "지점등록", "/admin.center/add")
+        ));
+
         menus.put("borad", Arrays.asList(
                 new MenuDetail("list", "게시판목록", "/admin/board"),
                 new MenuDetail("add", "게시판등록", "/admin/board/add"),

@@ -2,6 +2,7 @@ package com.hospital.configs;
 
 import com.hospital.member.service.LoginFailureHandler;
 import com.hospital.member.service.LoginSuccessHandler;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,7 +13,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class SecurityConfig {
-
 
 
     @Bean
@@ -38,6 +38,34 @@ public class SecurityConfig {
         http.logout(c -> {
             c.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
                     .logoutSuccessUrl("/member/login"); //로그아웃하면 로그인 페이지로 이동
+        });
+
+        //인가 설정 - 접근 통제
+        http.authorizeHttpRequests(c -> {
+            //개발하느라 잠시 주석걸어놈! 나중에 배포전에 풀자!!
+            c//.requestMatchers("/mypage/**").authenticated() //회원전용
+//                  .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "MANAGER") //관리자 & 매니저만 접근
+                    .anyRequest().permitAll(); //그외 모든 페이지는 모두 접근 가능
+        });
+
+        //오류페이지 상세 설정
+        //기본동작은 -> 로그인페이지로 이동
+        //AuthenticationEntryPoint를 따로 정의 할 수 있음
+        http.exceptionHandling(c -> {
+            c.authenticationEntryPoint(( req,  res, e) -> {
+                String URL = req.getRequestURI();
+                if( URL.indexOf("/admin") != -1 ){ //관리자페이지에서만 다르게 동작
+                    //관리자페이지면 접근 제한 응답코드
+                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                }
+                else{ //회원전용 페이지이면 로그인페이지로 이동
+                    res.sendRedirect(req.getContextPath() + "member/login");
+
+                }
+
+
+
+            });
         });
         return http.build();
     }

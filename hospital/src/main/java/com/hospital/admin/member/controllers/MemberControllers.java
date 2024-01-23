@@ -1,4 +1,4 @@
-package com.hospital.admin.member;
+package com.hospital.admin.member.controllers;
 
 import com.hospital.admin.menus.Menu;
 import com.hospital.admin.menus.MenuDetail;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Controller("adminMemberController")
 @RequestMapping("/admin/member")
-public class controllers implements ExceptionProcessor {
+public class MemberControllers implements ExceptionProcessor {
 
 
     //모든 템플릿영역에서 공유되어야하니까 @ModelAttribute
@@ -35,7 +35,7 @@ public class controllers implements ExceptionProcessor {
     }
 
     //공통기능
-    public String commonProcess(String code){
+    public void commonProcess(String code){
 
 
     }
