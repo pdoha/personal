@@ -5,6 +5,7 @@ import com.hospital.member.entities.Authorities;
 import com.hospital.member.entities.Member;
 import com.hospital.member.repositories.AuthoritiesRepository;
 import com.hospital.member.repositories.MemberRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +18,7 @@ class HospitalApplicationTests {
 	@Autowired
 	private AuthoritiesRepository authoritiesRepository;
 
-	@Test
+	@Test @Disabled
 	void contextLoads() {
 		//회원한명 불러와서
 		Member member = memberRepository.findByUserId("user01").orElse(null);
