@@ -13,7 +13,7 @@ import java.util.List;
 
 @Controller("adminMemberController")
 @RequestMapping("/admin/member")
-public class MemberControllers implements ExceptionProcessor {
+public class MemberController implements ExceptionProcessor {
 
 
     //모든 템플릿영역에서 공유되어야하니까 @ModelAttribute
