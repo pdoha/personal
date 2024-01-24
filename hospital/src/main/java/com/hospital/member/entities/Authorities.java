@@ -19,7 +19,7 @@ public class Authorities {
 
     @Id
     @GeneratedValue
-    private long seq; //회원번호
+    private long seq; //회원번호 (일련번호)
 
     //한명의 회원이 여러개 권한 ( ManyToOne )
     @ManyToOne(fetch= FetchType.LAZY)

@@ -56,7 +56,7 @@ public class SecurityConfig {
                 String URL = req.getRequestURI();
                 if( URL.indexOf("/admin") != -1 ){ //관리자페이지에서만 다르게 동작
                     //관리자페이지면 접근 제한 응답코드
-                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED); //401
                 }
                 else{ //회원전용 페이지이면 로그인페이지로 이동
                     res.sendRedirect(req.getContextPath() + "member/login");

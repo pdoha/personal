@@ -23,9 +23,11 @@ public interface MemberRepository extends JpaRepository<Member, Long>,
 
     @EntityGraph(attributePaths = "authorities") //조회했을때 즉시 로딩
     Optional<Member> findByEmail(String email);
-    Optional<Member> findByUserId(String userId);
 
     @EntityGraph(attributePaths = "authorities") //조회했을때 즉시 로딩
+    Optional<Member> findByUserId(String userId);
+
+
     default boolean existsByEmail(String email){
         QMember member = QMember.member;
         //이메일 존재하는지 체크

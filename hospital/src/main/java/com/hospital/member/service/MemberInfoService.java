@@ -30,7 +30,7 @@ public class MemberInfoService implements UserDetailsService {
         List<Authorities> tmp = member.getAuthorities(); //디비에서 조회했던 데이터를
         if (tmp != null) { //null이 아닐때
             //리스트형태로 값을 가공해서 넣는다
-            //가져온 상수 데이터 -> GrantedAuthority
+            //가져온 상수 데이터 -> GrantedAuthority객체로 변환
             authorities = tmp.stream() //tmp값이 있으면 stream 사용해서
                     .map(s -> new SimpleGrantedAuthority(s.getAuthority().name()))//변환메서드 map ( )
                     .toList(); //변환된 데이터를 리스트 형태로                        //넘어온 데이터는 엔티티 s

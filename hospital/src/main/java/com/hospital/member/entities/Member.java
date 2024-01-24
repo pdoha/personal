@@ -2,14 +2,15 @@ package com.hospital.member.entities;
 
 import com.hospital.commons.entities.Base;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
 @Entity
+@NoArgsConstructor @AllArgsConstructor
 public class Member extends Base{
 
     //기본키는 Wrapper class타입으로 입력
