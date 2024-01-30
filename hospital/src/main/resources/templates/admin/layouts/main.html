@@ -7,7 +7,8 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
 
     <title th:if="${pageTitle != null}" th:text="${pageTitle}"></title>
-
+    <!--아이콘 이미지 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
     <link rel="stylesheet" href="text/css" th:href="@{/common/css/style.css}">
     <link rel="stylesheet" href="text/css"
           th:each="cssFile : ${addCommonCss}"
@@ -33,7 +34,14 @@
 </head>
 <body>
     <header th:replace="~{admin/outlines/header::common}"></header>
-    <main layout:fragment="content"></main>
+    <main layout:fragment="content">
+        <aside th:replace="~{admin/outlines/_side::menus}"></aside>
+        <!--메뉴가 있을때만 노출될 수 있게 설정-->
+        <section>
+            <nav th:replace="~{admin/outlines/_submenu::submenus}"></nav>
+            <section layout:fragment="content"></section>
+        </section>
+    </main>
     <footer th:replace="~{admin/outlines/footer::common}"></footer>
 </body>
 

@@ -1,9 +1,13 @@
 package com.hospital.member.service;
 
+import com.hospital.member.Authority;
 import com.hospital.member.controllers.JoinValidator;
 import com.hospital.member.controllers.RequestJoin;
+import com.hospital.member.entities.Authorities;
 import com.hospital.member.entities.Member;
+import com.hospital.member.repositories.AuthoritiesRepository;
 import com.hospital.member.repositories.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,12 +15,15 @@ import org.springframework.validation.Errors;
 
 @Service
 @RequiredArgsConstructor
+//권한 부여
+//연달아서하는건 안전하게 하자
+@Transactional
 public class JoinService {
 
     private final MemberRepository memberRepository; //회원가입 성공시 DB저장
     private final JoinValidator validator; //검증추가
     private final PasswordEncoder encoder; //비밀번호 해시화
-
+    private final AuthoritiesRepository authoritiesRepository; //권한부여
 
     //회원가입 처리
     //커맨드 객체 형태로 가입들어올 경우도 있음
@@ -44,6 +51,13 @@ public class JoinService {
 
         //DB에 저장
         process(member);
+
+        //회원 가입 완료되면 일반 사용자 권한 부여 ( USER)
+        Authorities authorities = new Authorities();
+        authorities.setMember(member);
+        authorities.setAuthority(Authority.USER);
+        authoritiesRepository.saveAndFlush(authorities);
+        //-> 순환참조가 발생할 수 있음 (Member쪽에 tostring 출력 배제)
 
 
     }

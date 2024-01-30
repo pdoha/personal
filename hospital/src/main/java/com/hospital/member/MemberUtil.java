@@ -17,6 +17,8 @@ public class MemberUtil {
     }
 
     //회원정보를 세션쪽으로 가져옴
+    //회원 데이터 조회
+    //세션에 저장된 멤버데이터를 가져오는 것
     public Member getMember(){
         Member member = (Member) session.getAttribute("member");
 
