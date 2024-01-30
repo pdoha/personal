@@ -22,6 +22,9 @@ public class BoardController {
         //수정
         data.setSubject("(수정)제목");
         boardDataRepository.flush();
+
+
+
      /*   BoardData data = new BoardData();
         //회원정보는 로그인한 회원정보로 알아서 들어감
         data.setSubject("제목");
