@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class ConfigSaveService {
     private final ConfigsRepository repository;
 
+    //저장하는 객체가 다양하다 ( 자료형이 다양하니까 지네릭 메서드를 쓰자)
     public <T> void save(String code, T data){ //매개변수에 코드 넣고, json 문자열로 바꿔주자
        //조회했을때 영속성안에 있으면 가져오고
         //없으면 새로운 엔티티 만든다

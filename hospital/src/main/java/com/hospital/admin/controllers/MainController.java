@@ -12,7 +12,7 @@ public class MainController implements ExceptionProcessor {
 
     //메인페이지
     @GetMapping
-    public  String index(){
+    public String index(){
         return "admin/main/index";
     }
 }

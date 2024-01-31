@@ -7,9 +7,9 @@
 <section layout:fragment="content">
     <h1>기본설정</h1>
 
-    <form name="frmSave" method="post" th:action="@{/admin/config}" autocomplete="off"> //자동완성 끄기
+    <form name="frmSave" method="post" th:action="@{/admin/config}" autocomplete="off" th:object="${basicConfig}">
         <h2>사이트 설정</h2>
-        <table class="table_cols" mb30>
+        <table class="table_cols mb30">
             <tr>
                 <th width="180">사이트 제목</th>
                 <td>
