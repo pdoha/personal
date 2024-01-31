@@ -34,14 +34,11 @@
 </head>
 <body>
     <header th:replace="~{admin/outlines/header::common}"></header>
-    <main layout:fragment="content">
-        <aside th:replace="~{admin/outlines/_side::menus}"></aside>
-        <!--메뉴가 있을때만 노출될 수 있게 설정-->
-        <section>
-            <nav th:replace="~{admin/outlines/_submenu::submenus}"></nav>
+        <main>
+            <aside th:replace="~{admin/outlines/_side::menus}"></aside>
+            <!--메뉴가 있을때만 노출될 수 있게 설정-->
             <section layout:fragment="content"></section>
-        </section>
-    </main>
+        </main>
     <footer th:replace="~{admin/outlines/footer::common}"></footer>
 </body>
 

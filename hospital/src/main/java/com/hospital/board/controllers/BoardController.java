@@ -3,6 +3,7 @@ package com.hospital.board.controllers;
 import com.hospital.board.entities.BoardData;
 import com.hospital.board.repositories.BoardDataRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,7 @@ public class BoardController {
 
     @ResponseBody //void로 넣어서 응답내용 없어도됨
     @GetMapping("/test")
-    public void test(){
+    public void test() {
         //기본데이터 가져와서
         BoardData data = boardDataRepository.findById(1L).orElse(null);
         //수정
@@ -24,12 +25,19 @@ public class BoardController {
         boardDataRepository.flush();
 
 
-
-     /*   BoardData data = new BoardData();
+/*
+        BoardData data = new BoardData();
         //회원정보는 로그인한 회원정보로 알아서 들어감
         data.setSubject("제목");
         data.setContent("내용");
         boardDataRepository.saveAndFlush(data);*/
+    }
+
+    @ResponseBody
+    @GetMapping("/test2")
+    @PreAuthorize("isAuthenticated()") //로그인한 회원만 접근가능
+    public void test2 () {
+        System.out.println("test2!!");
 
     }
 }

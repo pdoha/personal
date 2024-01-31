@@ -1,6 +1,7 @@
 package com.hospital.admin.config.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.hospital.admin.config.entities.Configs;
@@ -15,8 +16,18 @@ public class ConfigInfoService {
     private final ConfigsRepository repository;
     /*조회시에ㅔ 내가 원했던 클래스 형태로 바꿔야함 */
     public <T> T get(String code, Class<T> clazz){
+        return get(code, clazz, null);
+    }
+
+    public <T> T get(String code, TypeReference<T> typeReference){
+        //클래스클래스가 널값이면 타입레퍼런스로 처리
+        return get(code, null, typeReference);
+
+    }
+
+    public <T> T get(String code, Class<T> clazz, TypeReference typeReference){
         //단일형 자료형
-        //레포지티에서 code 찾아서 있으면 변환하고 없으면 따로 처리 안한다 null
+        //레포지티에서 code 찾아서 있으면 변환하고 없으면 따로 처리 안하고 종료
         Configs config = repository.findById(code).orElse(null);
         if(config == null || !StringUtils.hasText(config.getData())){
             return null;
