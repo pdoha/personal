@@ -21,10 +21,10 @@
         <dl>
             <dt th:text="#{아이디}"></dt>
             <dd>
-                <input type="text" name="userId" th:value="${session.username}" th:field="*{userId}">
+                <input type="text" name="userId"  th:field="*{userId}">
 
-                <div class="error" th:if="${session.NotBlank_username != null}"
-                     th:text="${session.NotBlank_username}"></div>
+                <div class="error" th:each="err : ${#fields.errors('userId')}"
+                     th:text="${err}"></div>
             </dd>
         </dl>
 
@@ -32,8 +32,8 @@
             <dt th:text="#{비밀번호}"></dt>
             <dd>
                 <input type="password" name="password" th:field="*{password}">
-                <div class="error" th:if="${session.NotBlank_password != null}"
-                     th:text="${NotBlank_password}"></div>
+                <div class="error" th:each="err : ${#fields.errors('password')}"
+                     th:text="${err}"></div>
             </dd>
         </dl>
 

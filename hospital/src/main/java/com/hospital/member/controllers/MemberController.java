@@ -37,6 +37,8 @@ public class MemberController implements ExceptionProcessor { //발생한 에러
 
         if(errors.hasErrors()){ //hasErrors가 참이면
             //입력한 값을 보여준다 (수정할수있게)
+
+            errors.getAllErrors().forEach(System.out::println);
             return utils.tpl("member/join");
         }
         //회원가입 완료되면 로그인페이지로 이동
