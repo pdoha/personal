@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <aside th:fragment="menus">
-<!--주메뉴-->
+        <!--주메뉴-->
         <a th:href="@{/admin/config}" th:classappend="${menuCode} == 'config' ? 'on'">
             <i class="xi-cog"></i> 기본설정
         </a>
@@ -13,15 +13,6 @@
         <a th:href="@{/admin/board}" th:classappend="${menuCode} == 'board' ? 'on'">
             <i class="xi-pen"></i> 게시판 관리
         </a>
-
-        <a th:href="@{/admin/center}" th:classappend="${menuCode} == 'center' ? 'on'">
-            <i class="xi-tint"></i>센터 관리
-        </a>
-
-        <a th:href="@{/admin/reservation}" th:classappend="${menuCode} == 'reservation' ? 'on'">
-            <i class="xi-tint"></i>예약 관리
-        </a>
-
 
     </aside>
 

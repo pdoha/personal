@@ -32,13 +32,19 @@
 
     <th:block layout:fragment="addScript"></th:block>
 </head>
+
 <body>
     <header th:replace="~{admin/outlines/header::common}"></header>
-        <main>
-            <aside th:replace="~{admin/outlines/_side::menus}"></aside>
-            <!--메뉴가 있을때만 노출될 수 있게 설정-->
-            <section layout:fragment="content"></section>
-        </main>
+
+    <main>
+        <aside th:replace="~{admin/outlines/_side::menus}"></aside>
+        <!--메뉴가 있을때만 노출될 수 있게 설정-->
+        <section>
+        <nav th:replace="~{admin/outlines/_submenu::submenus}"></nav>
+        <section layout:fragment="content"></section>
+        </section>
+    </main>
+
     <footer th:replace="~{admin/outlines/footer::common}"></footer>
 </body>
 
