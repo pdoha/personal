@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller("adminMemberController")
 @RequestMapping("/admin/member")
@@ -30,14 +31,19 @@ public class MemberController implements ExceptionProcessor {
     }
     @GetMapping
     public String list(Model model){
-        model.addAttribute("subMeunCode", "list");
+        //on 클래스 추가
+         commonProcess("list", model);
         return "admin/member/list";
     }
 
     //공통기능
-    public void commonProcess(String code){
+    private void commonProcess(String mode, Model model) {
+        //모드값이 널값일때 기본값 list
+        mode = Objects.requireNonNullElse(mode, "list");
+        String pageTitle = "회원 목록";
 
-
+        model.addAttribute("subMenuCode", mode);
+        model.addAttribute("pageTitle", pageTitle);
     }
 
 

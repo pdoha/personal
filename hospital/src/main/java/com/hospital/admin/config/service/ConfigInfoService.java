@@ -14,7 +14,8 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class ConfigInfoService {
     private final ConfigsRepository repository;
-    /*조회시에ㅔ 내가 원했던 클래스 형태로 바꿔야함 */
+
+    /*조회시에 내가 원했던 클래스 형태로 바꿔야함 */
     public <T> T get(String code, Class<T> clazz){
         return get(code, clazz, null);
     }
@@ -25,10 +26,12 @@ public class ConfigInfoService {
 
     }
 
+
     public <T> T get(String code, Class<T> clazz, TypeReference typeReference){
         //단일형 자료형
         //레포지티에서 code 찾아서 있으면 변환하고 없으면 따로 처리 안하고 종료
         Configs config = repository.findById(code).orElse(null);
+        //config가 아예 없거나 데이터가 조회는 됐지만 널값이나 비어있으면 처리하지않고 종료
         if(config == null || !StringUtils.hasText(config.getData())){
             return null;
         }
@@ -39,8 +42,9 @@ public class ConfigInfoService {
         //원래 형태로 바꾸자 ( 원래   T반환값 데이터 T data)
         String jsonString = config.getData();
         try {
-            T data = om.readValue(jsonString, clazz);
+            T data = om.readValue(jsonString, clazz); //readValue 원래 자료형으로 돌려줌
             return data;
+
         } catch(JsonProcessingException e){
             e.printStackTrace();
             return null;

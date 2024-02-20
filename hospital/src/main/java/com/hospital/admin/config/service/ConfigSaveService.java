@@ -15,14 +15,15 @@ public class ConfigSaveService {
 
     //저장하는 객체가 다양하다 ( 자료형이 다양하니까 지네릭 메서드를 쓰자)
     public <T> void save(String code, T data){ //매개변수에 코드 넣고, json 문자열로 바꿔주자
-       //조회했을때 영속성안에 있으면 가져오고
+       //조회했을때 영속성안에 있으면 가져오고 (기본키 code)
         //없으면 새로운 엔티티 만든다
         Configs configs = repository.findById(code).orElseGet(Configs::new);
 
-        ObjectMapper om = new ObjectMapper(); //데이터 치환
+        ObjectMapper om = new ObjectMapper(); //데이터 치환 ObjectMapper
         om.registerModule(new JavaTimeModule()); //자바타임모듈 추가
 
         //반환값은 json 문자열
+        //writeValueAsString : json 문자열로 변환
         try {
             String jsonString = om.writeValueAsString(data);
             //예외 발상하지 않은 구간에서 DB에 저장
@@ -32,7 +33,9 @@ public class ConfigSaveService {
 
             //DB저장
             repository.saveAndFlush(configs);
+
         } catch (JsonProcessingException e) {
+            //예외메세지 출력
             e.printStackTrace();
         }
 

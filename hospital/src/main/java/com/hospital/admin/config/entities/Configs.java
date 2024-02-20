@@ -10,10 +10,10 @@ import lombok.Data;
 @Entity
 public class Configs {
 
-    @Id
+    @Id //기본키
     @Column(length = 60)
     private String code;
 
-    @Lob
+    @Lob //데이터 많아서
     private String data;
 }
