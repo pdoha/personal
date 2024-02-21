@@ -78,6 +78,15 @@ public class Utils {
         return getMessage(code, null);
     }
 
+    //줄개행 문자가 있으면 br태그로 바꿔주는 편의기능
+    // -> \n 또는 \r\n -> <br>
+    public String nl2br(String str){
+        str = str.replaceAll("\\n", "<br>")
+                .replaceAll("\\r", "");
+        return str;
+
+    }
+
 
 
 }

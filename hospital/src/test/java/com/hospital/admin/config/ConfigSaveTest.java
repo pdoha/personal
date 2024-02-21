@@ -1,5 +1,6 @@
 package com.hospital.admin.config;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.hospital.admin.config.controllers.BasicConfig;
 import com.hospital.admin.config.service.ConfigInfoService;
 import com.hospital.admin.config.service.ConfigSaveService;
@@ -9,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+
+import java.util.Map;
+import java.util.Optional;
 
 @SpringBootTest
 @Transactional
@@ -32,7 +36,13 @@ public class ConfigSaveTest {
 
         saveService.save("basic", config);
 
-        BasicConfig config2 = infoService.get("basic", BasicConfig.class);
+        //단일 타입일때
+        BasicConfig config2 = infoService.get("basic", BasicConfig.class).get();
         System.out.println(config2);
+
+        //복잡한 타입일때
+        Optional<Map<String, String>> opt = infoService.get("basic", new TypeReference<>() {
+        });
+        System.out.println(opt.get());
     }
 }
