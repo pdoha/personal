@@ -28,7 +28,7 @@ public class ConfigSaveService {
             String jsonString = om.writeValueAsString(data);
             //예외 발상하지 않은 구간에서 DB에 저장
             configs.setData(jsonString);
-            //처음만드는 엔티티는 코드가 없으니까 넣어줘야함
+            //처음만드는 엔티티는 코드가 없으니까 넣어줘야함 (없으면 오류날 수 있음)
             configs.setCode(code);
 
             //DB저장
