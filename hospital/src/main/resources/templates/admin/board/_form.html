@@ -1,38 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<th:block th:fragment="form">
-    <input type="hidden" name="gid" value="testgid"> <!--커맨드객체 연동안해서 임시-->
+<th:block th:fragment="form" th:object="${requestBoardConfig}">
+    <div class="error global" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
+    <input type="hidden" name="gid" th:field="*{gid}">
     <h2>기본 설정</h2>
     <table class="table_cols mb30">
         <tr>
             <th width="180">사용여부</th>
             <td>
-                <input type="radio" name="active" value="true" id="active_true">
+                <input type="radio" name="active" value="true" id="active_true"
+                    th:field="*{active}">
                 <label for="active_true">사용</label>
 
-                <input type="radio" name="active" value="false" id="active_false">
+                <input type="radio" name="active" value="false" id="active_false"
+                    th:field="*{active}">
                 <label for="active_false">미사용</label>
             </td>
         </tr>
 
         <tr>
             <th>게시판 ID</th>
-            <td>
-                <input type="text" name="bid">
+            <td th:if="*{mode != 'edit'}">
+                <input type="text" name="bid" th:field="*{bid}"> <!--기본키-->
+            </td>
+            <td th:if="*{mode == 'edit'}"> <!--수정이면-->
+                <input type="hidden" name="bid" th:field="*{bid}">
+                <th:block th:text="*{bid}"></th:block>
             </td>
         </tr>
 
         <tr>
             <th>게시판 이름</th>
             <td>
-                <input type="text" name="bName">
+                <input type="text" name="bName" th:field="*{bName}">
             </td>
         </tr>
 
         <tr>
             <th>1페이지당 게시글 수</th>
             <td>
-                <input type="number" name="rowsPerPage" min="1">
+                <input type="number" name="rowsPerPage" min="1" th:field="*{rowsPerPage}">
                 <!--행의 개수, 음수가되면안됨, 게시판 사용여부 (기본값 비활성화)
                 일반회원은 볼수없게 통제-->
             </td>
@@ -42,7 +49,7 @@
             <th>페이지 구간 갯수(pc)</th>
             <td>
 
-                <input type="number" name="pageCountPc" min="1">
+                <input type="number" name="pageCountPc" min="1" th:field="*{pageCountPc}">
             </td>
         </tr>
 
@@ -51,7 +58,7 @@
             <th>페이지 구간 갯수(mobile)</th>
             <td>
 
-                <input type="number" name="pageCountMobile" min="1">
+                <input type="number" name="pageCountMobile" min="1" th:field="*{pageCountMobile}">
             </td>
         </tr>
 
@@ -61,10 +68,10 @@
             <th>답글 사용</th>
             <td>
 
-                <input type="radio" name="useReply" value="true" id="useReply_true">
+                <input type="radio" name="useReply" value="true" id="useReply_true" th:field="*{useReply}">
                 <label for="useReply_true">사용</label>
 
-                <input type="radio" name="useReply" value="false" id="useReply_false">
+                <input type="radio" name="useReply" value="false" id="useReply_false" th:field="*{useReply}">
                 <label for="useReply_false">미사용</label>
             </td>
         </tr>
@@ -76,10 +83,10 @@
             <th>댓글 사용</th>
             <td>
 
-                <input type="radio" name="useComment" value="true" id="useComment_true">
+                <input type="radio" name="useComment" value="true" id="useComment_true" th:field="*{useComment}">
                 <label for="useComment_true">사용</label>
 
-                <input type="radio" name="useComment" value="false" id="useComment_false">
+                <input type="radio" name="useComment" value="false" id="useComment_false" th:field="*{useComment}">
                 <label for="useComment_false">미사용</label>
             </td>
         </tr>
@@ -90,10 +97,10 @@
             <th>에디터</th>
             <td>
 
-                <input type="radio" name="useEditor" value="true" id="useEditor_true">
+                <input type="radio" name="useEditor" value="true" id="useEditor_true" th:field="*{useEditor}">
                 <label for="useEditor_true">사용</label>
 
-                <input type="radio" name="useEditor" value="false" id="useEditor_false">
+                <input type="radio" name="useEditor" value="false" id="useEditor_false" th:field="*{useEditor}">
                 <label for="useEditor_false">미사용</label>
             </td>
         </tr>
@@ -102,10 +109,10 @@
         <tr>
             <th>이미지 첨부</th>
             <td>
-                <input type="radio" name="useUploadImage" value="true" id="useUploadImage_true">
+                <input type="radio" name="useUploadImage" value="true" id="useUploadImage_true" th:field="*{useUploadImage}">
                 <label for="useUploadImage_true">사용</label>
 
-                <input type="radio" name="useUploadImage" value="false" id="useUploadImage_false">
+                <input type="radio" name="useUploadImage" value="false" id="useUploadImage_false" th:field="*{useUploadImage}">
                 <label for="useUploadImage_false">미사용</label>
             </td>
         </tr>
@@ -116,10 +123,10 @@
         <tr>
             <th>파일 첨부</th>
             <td>
-                <input type="radio" name="useUploadFile" value="true" id="useUploadFile_true">
+                <input type="radio" name="useUploadFile" value="true" id="useUploadFile_true" th:field="*{useUploadFile}">
                 <label for="useUploadFile_true">사용</label>
 
-                <input type="radio" name="useUploadFile" value="false" id="useUploadFile_false">
+                <input type="radio" name="useUploadFile" value="false" id="useUploadFile_false" th:field="*{useUploadFile}">
                 <label for="useUploadFile_false">미사용</label>
             </td>
         </tr>
@@ -131,10 +138,10 @@
             <th>글작성 후 이동</th>
             <td>
 
-                <input type="radio" name="locationAfterWriting" value="list" id="locationAfterWriting_list">
+                <input type="radio" name="locationAfterWriting" value="list" id="locationAfterWriting_list" th:field="*{locationAfterWriting}">
                 <label for="locationAfterWriting_list">글목록</label>
 
-                <input type="radio" name="locationAfterWriting" value="view" id="locationAfterWriting_view">
+                <input type="radio" name="locationAfterWriting" value="view" id="locationAfterWriting_view" th:field="*{locationAfterWriting}">
                 <label for="locationAfterWriting_view">글보기</label>
             </td>
         </tr>
@@ -145,7 +152,7 @@
         <tr>
             <th>스킨</th>
             <td>
-                <input type="radio" name="skin" value="default" id="skin_default">
+                <input type="radio" name="skin" value="default" id="skin_default" th:field="*{skin}">
                 <label for="skin_default">기본(default)</label>
 
                 <input type="radio" name="skin" value="gallery" id="skin_gallery">
