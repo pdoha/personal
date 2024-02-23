@@ -1,13 +1,13 @@
-window.addEventListenter("DOMContentLoaded", function(){
+window.addEventListener("DOMContentLoaded", function(){
     const { loadEditor } = commonLib;
 
 
-        loadEditor("html_top");
+        loadEditor("html_top")
             .then(editor => window.editor1 = editor) // 반환값 editor값을 전역에서 조회할 수 있게
-            .catch(err => console.error(err));
-        loadEditor("html_bottom");
-            .then(editor => window.editor2 = editor) // 반환값 editor값을 전역에서 조회할 수 있게
-            .catch(err => console.error(err));
+            .catch(err => console.error(err)); //err가 나오면 콘솔창에 에러 출력
+        loadEditor("html_bottom")
+           .then(editor => window.editor2 = editor) // 반환값 editor값을 전역에서 조회할 수 있게
+           .catch(err => console.error(err));
 });
 
 //파일 업로드 후 후속 처리 함수

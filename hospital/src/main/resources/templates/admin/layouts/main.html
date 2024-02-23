@@ -41,7 +41,7 @@
 
     <script th:src="@{/admin/js/common.js?v={v}(v=${siteConfig.cssJsVersion})}"></script>
     <script th:each="jsFile : ${addScript}"
-            th:src="@{/admin/js/{file}}.js?v={v}(file=${jsFile}, v=${siteConfig.cssJsVersion})}"></script>
+            th:src="@{/admin/js/{file}.js?v={v}(file=${jsFile}, v=${siteConfig.cssJsVersion})}"></script>
 
     <th:block layout:fragment="addScript"></th:block>
 </head>

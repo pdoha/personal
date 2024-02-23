@@ -1,11 +1,13 @@
-package com.hospital.admin.board;
+package com.hospital.admin.board.controllers;
 
 import com.hospital.admin.menus.Menu;
 import com.hospital.admin.menus.MenuDetail;
 import com.hospital.commons.ExceptionProcessor;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +20,13 @@ import java.util.List;
 @RequestMapping("/admin/board")
 public class BoardController implements ExceptionProcessor {
 
+    //주메뉴 코드
     @ModelAttribute("menuCode")
-    public String getMenuCode(){ //주메뉴 코드
+    public String getMenuCode(){
         return "board";
     }
 
+    //서브메뉴
     @ModelAttribute("subMenus")
     public List<MenuDetail> getSubMenus(){
         return Menu.getMenus("board");
@@ -37,15 +41,22 @@ public class BoardController implements ExceptionProcessor {
 
     //게시판 등록
     @GetMapping("/add")
-    public String add(Model model){
+    public String add(@ModelAttribute RequestBoardConfig config, Model model){
         commonProcess("add", model);
         return "admin/board/add";
     }
 
     //(게시판 등록/수정 동시에 공유
     @PostMapping("/save")
-    public String save(Model model){
-        commonProcess("save", model);
+    public String save(@Valid RequestBoardConfig config, Errors errors, Model model){
+        String mode = config.getMode();
+
+        commonProcess("mode", model);
+
+        //에러있으면 처리안한다
+        if(errors.hasErrors()){
+            return "admin/board/" + mode;
+        }
         return "redirect:/admin/board";
 
     }
@@ -64,7 +75,7 @@ public class BoardController implements ExceptionProcessor {
         mode = StringUtils.hasText(mode) ? mode : "list";
 
 
-
+        //페이지이름
         if(mode.equals("add")){
             pageTitle = "게시판 등록";
         } else if(mode.equals("edit")){
@@ -74,7 +85,7 @@ public class BoardController implements ExceptionProcessor {
         }
 
         //공통
-        List<String> addCss = new ArrayList<>(); // CSS 추가
+
 
         //양식에 필요한 스크립트 ( 게시판 등록, 수정에 다 필요하니까 form)
         List<String> addScript = new ArrayList<>();
@@ -82,20 +93,19 @@ public class BoardController implements ExceptionProcessor {
         //추가 등록 수정에 필요한 공통적인 자바스크립트 (관리자쪽에 필요한 설정
         List<String> addCommonScript = new ArrayList<>();
 
-
-        if (mode.equals("add") || mode.equals("edit")){ //게시판 등록 또는 수정일때
+        //게시판 등록 또는 수정일때만 추가할 script
+        if (mode.equals("add") || mode.equals("edit")){
             addCommonScript.add("ckeditor5/ckeditor"); //에디더 추가
             addCommonScript.add("fileManager"); //파일업로드 ( 필요할때만 추가)
-            addScript.add("borad/form"); //보드 양식
+            addScript.add("board/form"); //보드 양식에 필요한 스크립트
 
         }
 
-
-
-        model.addAttribute("pageTitle", pageTitle);
+        model.addAttribute("pageTitle", pageTitle); //페이지제목
         model.addAttribute("subMenuCode", mode); //서브메뉴코드는 모드값과 동일하게
         model.addAttribute("addCommonScript", addCommonScript);
         model.addAttribute("addScript", addScript);
+
     }
 }
 
