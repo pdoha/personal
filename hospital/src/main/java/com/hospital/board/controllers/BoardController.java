@@ -1,7 +1,7 @@
 package com.hospital.board.controllers;
 
 import com.hospital.board.entities.BoardData;
-import com.hospital.board.repositories.BoardDataRepository;
+import com.hospital.board.repositories.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
-    private final BoardDataRepository boardDataRepository;
+    private final BoardRepository boardDataRepository;
 
     @ResponseBody //void로 넣어서 응답내용 없어도됨
     @GetMapping("/test")
