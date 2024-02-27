@@ -1,16 +1,23 @@
 package com.hospital.commons.interceptors;
 
 
+import com.hospital.admin.config.controllers.BasicConfig;
+import com.hospital.admin.config.service.ConfigInfoService;
 import com.hospital.member.MemberUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.util.Arrays;
+
 @Component
+@RequiredArgsConstructor
 public class CommonInterceptor implements HandlerInterceptor {
+    private final ConfigInfoService infoService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -18,8 +25,31 @@ public class CommonInterceptor implements HandlerInterceptor {
 
         //로그인페이지가 아닌 페이지일때는 메세지관련 세션내용을 비우자
         clearLoginData(request);
+        loadSiteConfig(request); //인티셉터 설정
 
         return true;
+    }
+
+    //설정값 인터셉터
+    //혹시 값이 없으면 비어있는 객체 만들기
+    private void loadSiteConfig(HttpServletRequest request){
+        //인터셉터는 모든 url에 적용되서 정적자원들은 쿼리가 여러번 수행됨
+        //불필요한곳에는 배제할 수있게 설정
+        String[] excludes = {".js", ".css", ".png", ".jpg", ".jpeg", "gif", ".pdf", ".xls", ".xlxs", ".ppt"};
+        //특정 url이 포함되어있으면 밑에 로드하지않는방향으로처리
+        String URL = request.getRequestURI().toLowerCase();
+
+        //넘어왔을때 url에서 s가 포함되어어있는지
+        boolean isIncluded = Arrays.stream(excludes).anyMatch(s -> URL.contains(s));
+
+        //한개라도 매칭이되면 통과되지않음
+        if(isIncluded){
+            return;
+        }
+        BasicConfig config = infoService.get("basic", BasicConfig.class).orElseGet(BasicConfig::new);
+
+        //request에서 설정값 넣어주기
+        request.setAttribute("siteConfig", config);
     }
 
     /**
