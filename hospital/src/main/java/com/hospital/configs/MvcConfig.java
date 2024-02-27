@@ -25,6 +25,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler(fileProperties.getUrl() + "**")
                 .addResourceLocations("file:///" + fileProperties.getPath());
 
+        //파일 업로드 인식못해서 경로 변경후 정적 경로 설정
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/");
     }
