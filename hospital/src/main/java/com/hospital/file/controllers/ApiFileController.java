@@ -15,7 +15,7 @@ public class ApiFileController implements ExceptionRestProcessor {
     //파일 올라가면 파일데이터
     public void upload(@RequestParam("file")MultipartFile[] files,
                        @RequestParam(name="gid", required = false) String gid,
-                       @RequestParam("location") String location){
+                       @RequestParam(name="location", required = false) String location){
 
     }
 }

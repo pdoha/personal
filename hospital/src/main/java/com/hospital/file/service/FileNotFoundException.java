@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 
 public class FileNotFoundException extends CommonException {
     public FileNotFoundException() {
+        //메시지와 응답코드
         super(Utils.getMessage("NotFound.file", "errors"), HttpStatus.NOT_FOUND);
     }
 }
