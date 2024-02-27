@@ -2,23 +2,26 @@ package com.hospital.admin.board.controllers;
 
 import com.hospital.admin.menus.Menu;
 import com.hospital.admin.menus.MenuDetail;
+import com.hospital.board.service.config.BoardConfigSaveService;
 import com.hospital.commons.ExceptionProcessor;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller("adminBoardController")
 @RequestMapping("/admin/board")
+@RequiredArgsConstructor
 public class BoardController implements ExceptionProcessor {
+
+    private final BoardConfigSaveService configSaveService;
+    private final BoardConfigValidator configValidator;
 
     //주메뉴 코드
     @ModelAttribute("menuCode")
@@ -46,6 +49,13 @@ public class BoardController implements ExceptionProcessor {
         return "admin/board/add";
     }
 
+    @GetMapping("/adit/{bid}")
+    public String edit(@PathVariable("bid") String bid, Model model){
+        commonProcess("edit", model);
+
+        return "admin/board/edit";
+    }
+
     //(게시판 등록/수정 동시에 공유
     @PostMapping("/save")
     public String save(@Valid RequestBoardConfig config, Errors errors, Model model){
@@ -53,10 +63,14 @@ public class BoardController implements ExceptionProcessor {
 
         commonProcess("mode", model);
 
+        configValidator.validate(config, errors);
         //에러있으면 처리안한다
         if(errors.hasErrors()){
             return "admin/board/" + mode;
         }
+
+        //오류없으면
+        configSaveService.save(config);
         return "redirect:/admin/board";
 
     }
