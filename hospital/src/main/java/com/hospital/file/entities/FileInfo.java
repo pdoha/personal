@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -36,6 +37,15 @@ public class FileInfo extends BaseMember {
 
     @Column(length = 65)
     private String fileType;
+
+    @Transient //DB에 저장 X
+    private String filePath; //서버에 실제올라간 파일 경로
+    @Transient
+    private String fileUrl; //브라우저 주소창에 입력해서 접근할 수 있는 경로
+    @Transient
+    private List<String> thumbsPath; //썸네일 이미지 경로
+    @Transient
+    private List<String> thumbsUrl; //브라우저 주소창에 입력해서 접근할 수 있는 경로
 
     private boolean done;
 }

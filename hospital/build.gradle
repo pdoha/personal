@@ -42,6 +42,9 @@ dependencies {
 
 	//동일한 getter, setter 패턴을 가지고 데이터 지환
 	implementation 'org.modelmapper:modelmapper:3.2.0'
+	//썸네일 추가
+	implementation 'net.coobird:thumbnailator:0.4.20'
+
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
