@@ -96,6 +96,7 @@ public class FileInfoService {
         long dir = seq % 10L;
         String fileName = seq + fileInfo.getExtension();
 
+        //파일경로 , URL
         //서버에 올라가는 실제 파일 경로 filePath
         //브라우저창에서 접근할 수 있는 url를 가공해서 넣음
         String filePath = fileProperties.getPath() + dir + "/" + fileName;
@@ -103,6 +104,8 @@ public class FileInfoService {
 
         fileInfo.setFilePath(filePath);
         fileInfo.setFileUrl(fileUrl);
+
+        //썸네일 경
     }
 
 

@@ -82,6 +82,7 @@ public class FileUploadService {
                     }
                     //사이즈 설정에있는 너비와 높이가지고
                     for(int[] sizes : thumbsSize){
+                        if (sizes.length != 2) continue; //배열길이가 2개가 아니면 건너뛴다
                         String thumbFileName = sizes[0] + "_" + sizes[1] + "_" + seq + extension; //파일명
                         //썸네일 디렉토리 , 파일명
                         File thumb = new File(thumbDir, thumbFileName); //설정했던 썸네일 경로, 파일이름
