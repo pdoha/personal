@@ -4,7 +4,6 @@ import com.hospital.admin.config.controllers.BasicConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.engine.jdbc.batch.spi.BatchKey;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -93,11 +92,30 @@ public class Utils {
 
     //썸네일 이미지 사이즈 설정
     public List<int[]> getThumbSize(){
-        BasicConfig config = (BasicConfig) request.getAttribute("siteConfig");
-        String thumbSzie = config.getThumbSize();
-        String[] thumbSize = thumbSzie.split("\\n");
-        Arrays.stream(thumbSize).map(s -> s.replaceAll("\\r", ""))
-                .map(s -> s.split("X"));
+        BasicConfig config = (BasicConfig) request.getAttribute("siteConfig"); //설정가져와서
+        String thumbSzie = config.getThumbSize(); //썸네일 사이즈 설정만 가져와서
+        String[] thumbSize = thumbSzie.split("\\n"); //줄바꿈 제거
+
+        List<int[]> data = Arrays.stream(thumbSize).map(this::toConvert).toList();
+
+        return data;
+    }
+
+    // \r 제거하고 대문자 x 자르고, 인트배열로 반환하는 편의 메서드
+    public int[] toConvert(String size){
+        //앞뒤에 공백이 있을경우 제거 ( 공백있으면 반환안됨)
+        size = size.trim();
+        try { //만약에 값이 있다고하더라도 알파벳같은 숫자로 안바뀌는 문자열일때 null 발생가능성이 있으므로 try, catch
+            int[] data = Arrays.stream(size.replaceAll("\\r", "") //커서 다음행 제거
+                            .toUpperCase().split("X")) //x를 대문자로 바꿔서 잘라주고
+                            .filter(s -> !s.isBlank()) //공백일때는 건너뛰고 -> 처리하지않고
+                            //공백아니면 변환메서드 이용해서 int배열로 반환
+                            .mapToInt(Integer::parseInt).toArray(); //문자 -> 정수로 바꿔서 배열로 변환
+
+            return data;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 
