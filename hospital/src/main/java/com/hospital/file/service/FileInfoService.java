@@ -7,12 +7,17 @@ import com.hospital.file.entities.QFileInfo;
 import com.querydsl.core.BooleanBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
 
 import static org.springframework.data.domain.Sort.Order.asc;
 
@@ -105,7 +110,85 @@ public class FileInfoService {
         fileInfo.setFilePath(filePath);
         fileInfo.setFileUrl(fileUrl);
 
-        //썸네일 경
+        //썸네일 경로 URL (해당파일의 썸네일 디렉토리)
+
+        //가져온 경로를 list에 담자
+        List<String> thumbsPath = new ArrayList<>();
+        List<String> thumbsUrl = new ArrayList<>();
+
+        //공통경로 맨아래 메서드를 만들었음
+
+        String thumbDir = getThumbDir(seq);
+        String thumbUrl = getThumbUrl(seq);
+
+        //썸네일 경로를 가지고 조회 ( list ( ):경로에 있는 모든 파일을 가져온다)
+        File _thumDir = new File(thumbDir);
+        Fileinfo
+        //디렉토리가 있을때만 파일을 가져온다
+        if(_thumDir.exists()){ //경로가 존재하면
+            //파일 목록을 전부 가져오기
+            for(String thumbFileName : _thumDir.list()){ // list ( ):경로에 있는 모든 파일을 가져온다
+                thumbsPath.add(thumbDir + "/" + thumbFileName);
+                thumbsUrl.add(thumbUrl + "/" + thumbFileName);
+            }
+
+            //썸네일 만들기
+            fileInfo.setThumbsPath(thumbsPath);
+            fileInfo.setThumbsUrl(thumbsUrl);
+
+
+        }
+
+        //파일별 특정 사이즈 썸네일 조회
+        public String[] getThumb(long seq, int width, int height){
+            //파일정보
+            FileInfo fileInfo = get(seq);
+            String fileType = fileInfo.getFileType(); //파이형식이 이미지인지 체크
+            if(fileType.indexOf("image/") == -1){
+                return null; //이미지가 아니면 건너뛴다
+            }
+
+            //파일이름 가져오기
+            String fileName = seq + fileInfo.getExtension();
+
+            String thumbDir = getThumbDir(seq);
+            File _thumbDir = new File(thumbDir); //없을 경우 새로 만든다
+            if(!_thumbDir.exists()){
+                _thumbDir.mkdirs();
+
+            }
+            String thumbPath = String.format("%s/%d_%d_%s", thumbDir, width, height, fileName);
+            File _thumbPath = new File(thumbPath);
+            if(!_thumbPath.exists()) { //썸네일 이미지가 없는경우 만든다
+                try {
+                    Thumbnails.of(new File(fileInfo.getFilePath()))
+                            .size(width, height)
+                            .toFile(_thumbPath);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+
+            //url 만들기
+            String thumbUrl = String.format("%s/%d_%d_%s", fileInfo.getThumbsUrl())
+                    //경로, url
+                    return new String[] { thumbPath, thumbUrl};
+
+        }
+
+        public String getThumbDir(long seq){
+            String thumbDirCommon = "thumbs/" + (seq % 10) + "/" + seq; //공통경로 따로뺌
+            return fileProperties.getPath() + thumbDirCommon;
+
+
+        }
+
+        public String getThumbUrl(long seq){
+            String thumbDirCommon = "thumbs/" + (seq % 10) + "/" + seq; //공통경로 따로뺌
+            return fileProperties.getUrl() + thumbDirCommon;
+        }
+
+
     }
 
 

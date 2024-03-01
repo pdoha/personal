@@ -1,6 +1,7 @@
 package com.hospital.commons;
 
 import com.hospital.admin.config.controllers.BasicConfig;
+import com.hospital.file.service.FileInfoService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class Utils {
 
     private final HttpServletRequest request;
     private final HttpSession session;
+    private final FileInfoService fileInfoService;
 
     //메세지 번들
     //객체를 만들지 않아도 클래스가 로드될때 실행되게 하기 위해서 static 사용
@@ -116,6 +118,23 @@ public class Utils {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    //썸네일 -> 메세지태그로 출력
+
+    //className이 포함된 경우
+    public String printThumb(long seq, int width, int height, String className){
+        String[] data = fileInfoService.getThumb(seq, width, height);
+
+
+        return "";
+
+    }
+
+    //className 없는경우
+    public String printThumb(long seq, int width, int height){
+        return printThumb(seq, width, height, null);
+
     }
 
 
