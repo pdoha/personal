@@ -120,11 +120,16 @@ public class Utils {
         }
     }
 
-    //썸네일 -> 메세지태그로 출력
+    //썸네일 -> 이미지태그로 바로 출력해주는 기능
 
     //className이 포함된 경우
     public String printThumb(long seq, int width, int height, String className){
         String[] data = fileInfoService.getThumb(seq, width, height);
+        if(data != null){//데이터가 있으면 이미지태그 출력
+            String cls = StringUtils.hasText(className) ? " class='" + className + "'" : "";
+            String image = String.format("<img src='%s'%s>", data[1], cls);
+            return image;
+        }
 
 
         return "";

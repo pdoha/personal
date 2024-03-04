@@ -27,7 +27,7 @@ public class FileUploadService {
     private final FileInfoRepository repository;
     private final FileInfoService infoService; //추가정보
     private final Utils utils;
-    public List<FileInfo> upload(MultipartFile[] files, String gid, String location){
+    public List<FileInfo> upload(MultipartFile[] files, String gid, String location, boolean imageOnly){
 
 
         //gid 없으면 기본값
@@ -45,6 +45,10 @@ public class FileUploadService {
             String fileName = file.getOriginalFilename(); //업로드시 원본 파일명
             String extension = fileName.substring(fileName.lastIndexOf(".")); //확장자 추출
             String fileType = file.getContentType(); //파일 종류 ( 이미지 파일 같은 ..)
+            //이미지만 업로드 하는 경우, 이미지가 아닌 형식은 업로드 배제
+            if(imageOnly && fileType.indexOf("image/") == -1){
+                continue;
+            }
 
             FileInfo fileInfo = FileInfo.builder()
                     .gid(gid)

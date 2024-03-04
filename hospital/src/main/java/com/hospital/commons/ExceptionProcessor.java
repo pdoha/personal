@@ -1,5 +1,7 @@
 package com.hospital.commons;
 
+import com.hospital.commons.exceptions.AlertBackException;
+import com.hospital.commons.exceptions.AlertException;
 import com.hospital.commons.exceptions.CommonException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -8,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 public interface ExceptionProcessor {
+
+
 
 
     //모든예외가 발생하면 여기로옴
@@ -28,6 +32,18 @@ public interface ExceptionProcessor {
         response.setStatus(status.value());
 
         e.printStackTrace();
+
+        //자바스크립트 Alert 형태로 응답
+        if(e instanceof AlertException){
+            String script = String.format("alert('%s');", e.getMessage());
+
+            if(e instanceof AlertBackException){
+                script += "history.back()";
+            }
+
+            model.addAttribute("script", script);
+            return "common/_execute_script"; //스크립트 출력할 템플릿
+        }
 
         //에러정보 추가
         model.addAttribute("status", status.value());
