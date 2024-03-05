@@ -14,6 +14,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/member") //기본주소
 @RequiredArgsConstructor //자동의존성 주입
@@ -88,11 +91,20 @@ public class MemberController implements ExceptionProcessor { //발생한 에러
     private void commonProcess(String mode, Model model){
         mode = StringUtils.hasText(mode) ? mode : "join";
         String pageTitle = Utils.getMessage("회원가입", "commons");
+
+        List<String> addCommonScript = new ArrayList<>(); //공통 자바스크립트
+
         if(mode.equals("login")){
             pageTitle = Utils.getMessage("로그인", "commons");
+
+        //회원가입할때
+        } else if (mode.equals("join")){
+            addCommonScript.add("fileManager"); //프로필이미지 업로드
+
         }
 
         model.addAttribute("pageTitle", pageTitle);
+        model.addAttribute("addCommonScript", addCommonScript);
     }
 
 }

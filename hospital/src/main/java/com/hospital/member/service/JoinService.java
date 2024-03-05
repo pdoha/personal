@@ -48,6 +48,7 @@ public class JoinService {
         member.setName(form.getName());
         member.setPassword(hash); //비밀번호 해시화
         member.setUserId(form.getUserId());
+        member.setGid(form.getGid());
 
         //DB에 저장
         process(member);
